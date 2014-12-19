@@ -90,7 +90,11 @@ log4web.config({
 日志消息。可以是字符串或Error对象。
 ####tag
 用于过滤器，可为空。
-
+调用示例：
+```js
+log4web.log("log info.","usersmodule");
+log4web.log("log info.");
+```
 ###info(msg,tag)
 ####msg
 日志消息。可以是字符串或Error对象。
