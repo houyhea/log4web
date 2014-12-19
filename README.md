@@ -41,8 +41,18 @@ define(["log4web"], function (log4web) {
 3. tagFilter.日志tag筛选,正则表达式字符串.使用者可以通过在console控制台通过log4web.config({tagFilter:"usersmodule"})配置值输出"usersmodule"tag的日志。默认值："".
 4. post.当发生异常是是否post到服务器。*此处只有当msg参数是Error对象时，才判断是否有提交到服务器*.默认值：0.
 5. postContextInfo.是否提交环境数据.默认值：1
-6. postUrl.异常信息提交的服务器地址.默认值：/api/exception
-
+6. postUrl.异常信息提交的服务器地址.默认值：/api/exception。
+代码示例：
+```js
+log4web.config({
+            debug: 0,
+            level: "debug",
+            tagFilter: "",
+            post: 0,
+            postContextInfo: 1,
+            postUrl: "/api/exception"
+        });
+```
 这里单独说一下postData，主要包含如下信息：
 
 1. browser.浏览器描述信息。返回字符串，格式：" Chrome,39.0.2171.95",逗号前表示浏览器类型，逗号后表示浏览器版号.
