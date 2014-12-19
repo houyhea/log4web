@@ -1,6 +1,6 @@
 /**
  * Created by houyhea on 14-12-19.
- * copyright © houyhea{at}126.com www.timespanjs.com
+ * copyright © houyhea{at}126.com https://github.com/houyhea/log4web
  *
  */
 (function () {
@@ -9,7 +9,7 @@
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
         __config = {
-            debug: 1,                     //是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试；
+            debug: 0,                     //是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试；
             level: "debug",             //日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志
             tagFilter: "",               //日志tag筛选,正则表达式字符串
             post: 0,                    //当发生异常是是否post到服务器
@@ -321,7 +321,15 @@
     var debug = function (msg, tag) {
         exec("debug", msg, tag);
     }
-    var log4web = {config: config, log: log, warn: warn, info: info, error: error, debug: debug};
+    var log4web = {
+        version: VERSION,
+        config: config,
+        log: log,
+        warn: warn,
+        info: info,
+        error: error,
+        debug: debug
+    };
 
 
     log4web.noConflict = function () {
