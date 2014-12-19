@@ -36,12 +36,32 @@ define(["log4web"], function (log4web) {
 对日志组件进行配置。如果不传参数，则返回当前日志组件的配置信息。
 配置项主要有：
 
-1. debug.是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试.默认值：0.
-2. level.日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志.默认值：debug;
-3. tagFilter.日志tag筛选,正则表达式字符串.使用者可以通过在console控制台通过log4web.config({tagFilter:"usersmodule"})配置值输出"usersmodule"tag的日志。默认值："".
-4. post.当发生异常是是否post到服务器。*此处只有当msg参数是Error对象时，才判断是否有提交到服务器*.默认值：0.
-5. postContextInfo.是否提交环境数据.默认值：1
-6. postUrl.异常信息提交的服务器地址.默认值：/api/exception。
+####debug
+是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试.默认值：0.
+####level
+日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志.默认值：debug;
+代码示例
+```js
+var Level = {
+        "error": 4,
+        "warn": 3,
+        "info": 2,
+        "log": 1,
+        "debug": 0
+    };
+```
+
+####tagFilter
+日志tag筛选,正则表达式字符串.使用者可以通过在console控制台通过**log4web.config({tagFilter:"usersmodule"})**配置值输出"usersmodule"tag的日志。默认值："".
+```js
+log4web.config({tagFilter:"usersmodule"});
+```
+####post
+当发生异常是是否post到服务器。**此处只有当msg参数是Error对象时，才判断是否有提交到服务器**.默认值：0.
+####postContextInfo
+是否提交环境数据.默认值：1
+####postUrl
+异常信息提交的服务器地址.默认值："/api/exception"。
 代码示例：
 ```js
 log4web.config({
