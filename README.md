@@ -84,11 +84,11 @@ define(["log4web"], function (log4web) {
 
 
 ##测试用例
-[参见该文件](https://github.com/houyhea/log4web/blob/master/test/unitTest.html)。
+[参见](https://github.com/houyhea/log4web/blob/master/test/unitTest.html)。
 ##浏览器兼容性
 兼容IE8+,chrome,firefox。
 ##依赖
-需要依赖jquery库，post数据用到了jquery.post方法。如果不想依赖jquery，可自行修改相关代码。
+需要依赖*jquery*库，post数据用到了jquery.post方法。如果不想依赖jquery，可自行修改相关代码。
 ##协议
 采用[MIT 许可协议](https://github.com/houyhea/log4web/blob/master/LICENSE)。
 ##帮助
