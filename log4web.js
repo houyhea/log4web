@@ -1,5 +1,5 @@
 /**
- * Created by houyhea on 14-8-20.
+ * Created by houyhea on 14-12-19.
  * copyright © houyhea{at}126.com www.timespanjs.com
  *
  */
@@ -9,10 +9,11 @@
         globalScope = typeof global !== 'undefined' ? global : this,
         oldGlobalMoment,
         __config = {
-            debug:1,                     //是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试；
+            debug: 1,                     //是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试；
             level: "debug",             //日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志
             tagFilter: "",               //日志tag筛选,正则表达式字符串
-            postException: 0,                //当发生异常是是否post到服务器
+            post: 0,                    //当发生异常是是否post到服务器
+            postContextInfo: 1,                //是否提交环境数据
             postUrl: "/api/exception"     //异常信息提交的服务器地址
         };
 
@@ -28,6 +29,7 @@
         "log": 1,
         "debug": 0
     }
+
     function extend(a, b) {
         if (!b || !a)
             return a;
@@ -48,83 +50,11 @@
 
         return a;
     }
-    var getPostData = function (msg) {
-        //to do
-        var body={};
-//        var body = {
-//            browser: WebContextInfo.browser(),
-//            os: WebContextInfo.os(),
-//            flash: WebContextInfo.flash(),
-//            url: WebContextInfo.url(),
-//            resolution: WebContextInfo.resolution(),
-//            occurTime: DateUtils.now("YYYYMMDDHHmmss"),
-//            referrer:WebContextInfo.referrer(),
-//            clientVersion:AppConfig.clientVersion
-//        }
-        if (msg instanceof Error) {
-            body=extend(body, {name: msg.name, message: msg.message, stack: msg.stack});
-        }
-        else {
-            body=extend(body, {name: "", message: msg + "", stack: ""});
-        }
-
-        return body;
-    }
-    var post = function (msg) {
-        var body=getPostData(msg);
-        //to do: ajax.post data
-
-    }
-    var exec = function (level, msg, tag) {
-        var logLevel = Level[__config.logLevel] || Level["debug"];
-
-        if (logLevel > Level[level])
-            return;
-        var needLog = false;
-        if (tag != undefined) {
-            var reg = new RegExp(__config.tagFilter);
-            needLog = reg.test(tag);
-        }
-        else {
-            needLog = true;
-        }
-        if (needLog) {
-            $log[level](msg);
-
-            if (msg instanceof Error && __config.postException) {
-                post(msg);
-            }
-        }
-    }
-    var config=function()
-    {
-        if(arguments.length==0)
-        return __config;
-    }
-
-    var error = function (msg, tag) {
-        exec("error", msg, tag);
-    }
-
-    var warn = function (msg, tag) {
-        exec("warn", msg, tag);
-    }
-    var info = function (msg, tag) {
-        exec("info", msg, tag);
-    }
-    var log = function (msg, tag) {
-        exec("log", msg, tag);
-    }
-    var debug = function (msg, tag) {
-        exec("debug", msg, tag);
-    }
-    var log4web = {config:config,log: log, warn: warn, info: info, error: error, debug: debug};
-
 
     /**
      * 软硬件环境信息获取对象
      */
-    var webContextInfo=(function(){
+    var webContextInfo = (function () {
         //缓存
         var cacheInfo = {url: null, referrer: null, browser: null, os: null, flash: null, resolution: null};
         /**
@@ -143,12 +73,9 @@
          * @returns {*}
          */
         var referrer = function () {
-            //这里，通常都是""，需要自己记录历史，返回上一页url；如果referer不为空，则返回它，如果为空，才返回自己记录的url；
-            if (cacheInfo.referrer == null) {
-                return  document.referrer;
-            }
-            else
-                return cacheInfo.referrer;
+
+            return  document.referrer;
+
 
         };
 
@@ -313,6 +240,90 @@
     })();
 
 
+    var getPostData = function (msg) {
+
+        var body = {};
+        if (__config.postContextInfo) {
+            body = {
+                browser: webContextInfo.browser(),
+                os: webContextInfo.os(),
+                flash: webContextInfo.flash(),
+                url: webContextInfo.url(),
+                resolution: webContextInfo.resolution(),
+                referrer: webContextInfo.referrer()
+            }
+        }
+        if (msg instanceof Error) {
+            body = extend(body, {name: msg.name, message: msg.message, stack: msg.stack});
+        }
+        else {
+            body = extend(body, {name: "", message: msg + "", stack: ""});
+        }
+
+        return body;
+    }
+    var post = function (msg) {
+        var body = getPostData(msg);
+        //依赖于jquery
+        try {
+            $.post(__config.postUrl, body);
+        }
+        catch (e) {
+            console ? console.error(e) : !0;
+        }
+
+
+    }
+
+    var exec = function (level, msg, tag) {
+        var logLevel = Level[__config.level] || Level["debug"];
+
+        if (logLevel > Level[level])
+            return;
+        var needLog = false;
+        if (tag != undefined) {
+            var reg = new RegExp(__config.tagFilter);
+            needLog = reg.test(tag);
+        }
+        else {
+            needLog = true;
+        }
+        if (needLog) {
+
+            console ? console[level](msg) : !0;
+
+            if (msg instanceof Error && __config.post) {
+                post(msg);
+            }
+        }
+    }
+    var config = function () {
+        if (arguments.length == 0)
+            return __config;
+        var args = arguments[0];
+        __config = extend(__config, args);
+
+    }
+
+    var error = function (msg, tag) {
+        exec("error", msg, tag);
+    }
+
+    var warn = function (msg, tag) {
+        exec("warn", msg, tag);
+    }
+    var info = function (msg, tag) {
+        exec("info", msg, tag);
+    }
+    var log = function (msg, tag) {
+        exec("log", msg, tag);
+    }
+    var debug = function (msg, tag) {
+        exec("debug", msg, tag);
+    }
+    var log4web = {config: config, log: log, warn: warn, info: info, error: error, debug: debug};
+
+
     log4web.noConflict = function () {
         globalScope.log4web = oldGlobalMoment;
         return log4web;
@@ -329,8 +340,7 @@
         globalScope.log4web = log4web;
     }
     //用于调试模式
-    if(__config.debug)
-    {
+    if (__config.debug) {
         oldGlobalMoment = globalScope.log4web;
         globalScope.log4web = log4web;
     }
