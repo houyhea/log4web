@@ -42,6 +42,7 @@ define(["log4web"], function (log4web) {
 日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志.默认值：debug;
 代码示例
 ```js
+//日志级别
 var Level = {
         "error": 4,
         "warn": 3,
