@@ -1,5 +1,5 @@
-#log4web
-##简介
+# log4web
+## 简介
 log4web是一款基于浏览器端的console的日志记录组件。支持如下特性：
 
 1. 日志级别设置；
@@ -7,10 +7,10 @@ log4web是一款基于浏览器端的console的日志记录组件。支持如下
 3. 提交环境信息；
 4. 日志Tag过滤器。
 
-###如何使用（how to use）
+### 如何使用（how to use）
 
 
-####浏览器下的引用
+#### 浏览器下的引用
 ```js
 <script src="log4web.js"></script>
 <script>
@@ -18,7 +18,7 @@ log4web是一款基于浏览器端的console的日志记录组件。支持如下
     log4web.error(new Error("houyhea"));
 </script>
 ```
-####requirejs下的引用
+#### requirejs下的引用
 ```js
 require.config({
     paths: {
@@ -31,14 +31,14 @@ define(["log4web"], function (log4web) {
 });
 ```
 
-##API说明
-###config(config)
+## API说明
+### config(config)
 对日志组件进行配置。如果不传参数，则返回当前日志组件的配置信息。
 配置项主要有：
 
-####debug
+#### debug
 是否开启调试模式。如果开启调试模式，则可以在console中输入window.log4web进行调试.默认值：0.
-####level
+#### level
 日志级别，error(4)、warn(3)、info(2)、log(1)、debug(0),级别越高，输出的日志越少。比如：当前级别如果是warn，则只输出error、warn的日志.默认值：debug;
 代码示例
 ```js
@@ -52,16 +52,16 @@ var Level = {
     };
 ```
 
-####tagFilter
+#### tagFilter
 日志tag筛选,正则表达式字符串.使用者可以通过在console控制台通过**log4web.config({tagFilter:"usersmodule"})**配置值输出"usersmodule"tag的日志。默认值："".
 ```js
 log4web.config({tagFilter:"usersmodule"});
 ```
-####post
+#### post
 当发生异常是是否post到服务器。**此处只有当msg参数是Error对象时，才判断是否有提交到服务器**.默认值：0.
-####postContextInfo
+#### postContextInfo
 是否提交环境数据.默认值：1
-####postUrl
+#### postUrl
 异常信息提交的服务器地址.默认值："/api/exception"。
 代码示例：
 ```js
@@ -86,46 +86,46 @@ log4web.config({
 8. message.异常message。
 9. stack.异常调用堆栈字符串。
 
-###log(msg,tag)
-####msg
+### log(msg,tag)
+#### msg
 日志消息。可以是字符串或Error对象。
-####tag
+#### tag
 用于过滤器，可为空。
 调用示例：
 ```js
 log4web.log("log info.","usersmodule");
 log4web.log("log info.");
 ```
-###info(msg,tag)
-####msg
+### info(msg,tag)
+#### msg
 日志消息。可以是字符串或Error对象。
-####tag
+#### tag
 用于过滤器，可为空。
-###debug(msg,tag)
-####msg
+### debug(msg,tag)
+#### msg
 日志消息。可以是字符串或Error对象。
-####tag
+#### tag
 用于过滤器，可为空。
-###warn(msg,tag)
-####msg
+### warn(msg,tag)
+#### msg
 日志消息。可以是字符串或Error对象。
-####tag
+#### tag
 用于过滤器，可为空。
-###error(msg,tag)
-####msg
+### error(msg,tag)
+#### msg
 日志消息。可以是字符串或Error对象。
-####tag
+#### tag
 用于过滤器，可为空。
 
 
-##测试用例
+## 测试用例
 [参见](https://github.com/houyhea/log4web/blob/master/test/unitTest.html)。
-##浏览器兼容性
+## 浏览器兼容性
 兼容IE8+,chrome,firefox。
-##依赖
+## 依赖
 需要依赖**jquery**库，post数据用到了jquery.post方法。如果不想依赖jquery，可自行修改相关代码。
-##协议
+## 协议
 采用[MIT 许可协议](https://github.com/houyhea/log4web/blob/master/LICENSE)。
-##帮助
+## 帮助
 支付宝赞助（houyhea）：  
 ![赞助](https://raw.githubusercontent.com/houyhea/lab/master/alipayqrcode.png)
